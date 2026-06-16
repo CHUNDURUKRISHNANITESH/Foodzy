@@ -1,14 +1,29 @@
-import React from 'react'
-import { View, Image, Text, TouchableOpacity, Dimensions } from 'react-native'
+import React, { useState } from 'react'
+import { View, Image, Text, TouchableOpacity, Dimensions, Alert, PermissionsAndroid, Platform } from 'react-native'
 import { StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
-import { ScreenRouteProp } from '../navigation/types';
+
 //adb shell input keyevent 82
+
+type LocationType = {
+  latitude: number;
+  longitude: number;
+} | null;
 
 export default function PaymentSuccessScreen() {
   const navigation = useNavigation<any>();
   const { width, height } = Dimensions.get('window');
+  const [currentLocation, setCurrentLocation] =
+    useState<LocationType>(null);
+
+  const handleTrackOrder = () => {
+    navigation.navigate('trackOrder', {
+      userLocation: {
+        latitude: 17.385044,
+        longitude: 78.486671,
+      },
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -17,7 +32,7 @@ export default function PaymentSuccessScreen() {
         <Text style={styles.congratulate}>Congratulations</Text>
         <Text style={styles.success}>Order has successfully placed, you can check order status by clicking Track order</Text>
       </View>
-      <TouchableOpacity style={styles.track} onPress={()=>navigation.navigate('trackOrder')}>
+      <TouchableOpacity style={styles.track} onPress={handleTrackOrder}>
         <Text style={styles.trackOrder}>TRACK ORDER</Text>
       </TouchableOpacity>
     </View>
@@ -80,5 +95,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Sen-Medium',
     fontSize: 16,
   }
-
 })

@@ -58,8 +58,14 @@ export type RootStackParamList = {
     restaurantScreen: RestaurantItem;
   };
   paySuccess: undefined
+  // trackOrder: {
+  //   restaurant: RestaurantItem;
+  // };
   trackOrder: {
-    restaurant: RestaurantItem;
+    userLocation: {
+      latitude: number;
+      longitude: number;
+    };
   };
 
 };

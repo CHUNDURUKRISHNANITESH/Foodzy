@@ -1,72 +1,569 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import RNLocation from 'react-native-location';
+import { useRoute } from '@react-navigation/native';
+import type { FeatureCollection, LineString } from 'geojson';
+import {
+  Map,
+  Camera,
+  Marker,
+  GeoJSONSource,
+  Layer,
+} from '@maplibre/maplibre-react-native';
 
-export default function App() {
-    const [location, setLocation] = useState(null);
+//adb shell input keyevent 82
 
-    const requestLocationPermission = async () => {
-        if (Platform.OS === 'ios') {
-            return true;
-        }
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: 'Geolocation Permission',
-                    message: 'Can we access your location?',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                },
-            );
-            return granted === PermissionsAndroid.RESULTS.GRANTED;
-        } catch (err) {
-            console.warn(err);
-            return false;
-        }
-    };
+type LocationType = {
+  latitude: number;
+  longitude: number;
+} | null;
 
-    const getLocation = async () => {
-        const hasPermission = await requestLocationPermission();
-
-        if (!hasPermission) {
-            console.log('Location permission denied');
-            return;
-        }
-
-        Geolocation.getCurrentPosition(
-            (position) => {
-                console.log(position);
-                setLocation(position);
-            },
-            (error) => {
-                console.log(error.code, error.message);
-                setLocation(null);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-    };
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>React Native Geolocation CLI</Text>
-            <Button title="Get Location" onPress={getLocation} />
-            {location && (
-                <View style={styles.resultBox}>
-                    <Text>Latitude: {location.coords.latitude}</Text>
-                    <Text>Longitude: {location.coords.longitude}</Text>
-                </View>
-            )}
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    title: { fontSize: 20, marginBottom: 20 },
-    resultBox: { marginTop: 20 },
+RNLocation.configure({
+  distanceFilter: 0,
 });
+
+const TrackOrderScreen = () => {
+  const route = useRoute<any>();
+  const userLocation = route.params?.userLocation;
+
+  const [currentLocation, setCurrentLocation] =
+    useState<LocationType>(null);
+
+  const subscriptionRef = React.useRef<null | (() => void)>(null);
+
+  const startLocationUpdates = async () => {
+    try {
+      const permission = await RNLocation.requestPermission({
+        ios: 'whenInUse',
+        android: {
+          detail: 'fine',
+        },
+      });
+
+      if (!permission) {
+        Alert.alert('Permission denied');
+        return;
+      }
+
+      if (subscriptionRef.current) {
+        subscriptionRef.current();
+        subscriptionRef.current = null;
+      }
+
+      subscriptionRef.current = RNLocation.subscribeToLocationUpdates(
+        (locations) => {
+          if (!locations || locations.length === 0) return;
+
+          const { latitude, longitude } = locations[0];
+
+          setCurrentLocation({ latitude, longitude });
+        }
+      );
+
+    } catch (e) {
+      console.log('ERROR:', e);
+      Alert.alert('Location error');
+    }
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current();
+        subscriptionRef.current = null;
+      }
+    };
+  }, []);
+
+  const routeData = React.useMemo((): FeatureCollection<LineString> | null => {
+    if (!currentLocation) return null;
+    console.log(currentLocation)
+
+    return {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [currentLocation.longitude, currentLocation.latitude],
+              [currentLocation.longitude + 0.01, currentLocation.latitude + 0.01],
+            ],
+          },
+          properties: {},
+        },
+      ],
+    };
+  }, [currentLocation]);
+
+  return (
+    <View style={{ flex: 1 }}>
+
+      <Text style={{ textAlign: 'center', marginTop: 10 }}>
+        Get Coords
+      </Text>
+
+      <View style={{ padding: 10, margin: 10, backgroundColor: 'white' }}>
+        <Text>
+          Latitude: {currentLocation?.latitude ?? 'Loading...'}
+        </Text>
+        <Text>
+          Longitude: {currentLocation?.longitude ?? 'Loading...'}
+        </Text>
+      </View>
+
+      <TouchableOpacity onPress={startLocationUpdates}>
+        <View style={{
+          backgroundColor: 'green',
+          padding: 10,
+          margin: 10,
+          alignItems: 'center'
+        }}>
+          <Text>Start Live Location</Text>
+        </View>
+      </TouchableOpacity>
+
+      {currentLocation && (
+        <View style={{ flex: 1 }}>
+          <Map
+            style={{ flex: 1 }}
+            mapStyle="https://api.maptiler.com/maps/streets/style.json?key=jZZkhgZs93Nj55GxO7Bu"
+          >
+            <Camera
+              center={[
+                currentLocation.longitude,
+                currentLocation.latitude,
+              ]}
+              zoom={15}
+            />
+
+            {routeData && (
+              <GeoJSONSource id="route" data={routeData}>
+                <Layer
+                  id="routeLine"
+                  type="line"
+                  style={{
+                    lineColor: 'orange',
+                    lineWidth: 4,
+                  }}
+                />
+              </GeoJSONSource>
+            )}
+
+            <Marker
+              id="user-location"
+              lngLat={[
+                currentLocation.longitude,
+                currentLocation.latitude,
+              ]}
+            >
+              <View
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 9,
+                  backgroundColor: 'red',
+                  borderWidth: 2,
+                  borderColor: 'white',
+                }}
+              />
+            </Marker>
+
+          </Map>
+        </View>
+      )}
+    </View>
+  );
+};
+
+export default TrackOrderScreen;
+
+
+
+// import React, { useState } from 'react';
+// import {
+//   View,
+//   Text,
+//   PermissionsAndroid,
+//   TouchableOpacity,
+//   Linking,
+//   Alert,
+//   Platform,
+// } from 'react-native';
+// import Geolocation from 'react-native-geolocation-service';
+// import type { GeoPosition, GeoError } from 'react-native-geolocation-service';
+
+// //import Geolocation from '@react-native-community/geolocation';
+// import { useRoute } from '@react-navigation/native';
+// import type { FeatureCollection, LineString } from 'geojson';
+// import {
+//   Map,
+//   Camera,
+//   Marker,
+//   GeoJSONSource,
+//   Layer,
+// } from '@maplibre/maplibre-react-native';
+
+// type LocationType = {
+//   latitude: number;
+//   longitude: number;
+// } | null;
+
+// const TrackOrderScreen = () => {
+//   const route = useRoute<any>();
+//   //const userLocation = route?.params?.userLocation ?? null;
+//   const userLocation = route.params?.userLocation;
+
+//   const [currentLocation, setCurrentLocation] = useState<LocationType>(null);
+
+//   const requestPermission = async () => {
+//     if (Platform.OS === 'android') {
+//       const granted = await PermissionsAndroid.request(
+//         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+//       );
+
+//       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//         getCurrentLocation();
+//       } else {
+//         Alert.alert('Permission denied');
+//       }
+//     } else {
+//       getCurrentLocation();
+//     }
+//   };
+
+//   const getCurrentLocation = () => {
+//     console.log('BEFORE GPS');
+
+//     Geolocation.getCurrentPosition(
+//       position => {
+//         console.log('SUCCESS');
+//         console.log(position);
+//       },
+//       error => {
+//         console.log('ERROR');
+//         console.log(error);
+//       }
+//     );
+
+//     console.log('AFTER GPS');
+//   };
+
+//   // const getCurrentLocation = () => {
+//   //   console.log('getCurrentLocation called');
+//   //   Geolocation.getCurrentPosition(
+//   //     (position: GeoPosition) => {
+//   //       const { latitude, longitude } = position.coords;
+
+//   //       console.log('LAT:', latitude);
+//   //       console.log('LNG:', longitude);
+
+//   //       setCurrentLocation({ latitude, longitude });
+//   //     },
+//   //     (error: GeoError) => {
+//   //       console.log('GPS ERROR:', error);
+//   //       Alert.alert('Error', error.message);
+//   //     },
+//   //     {
+//   //       enableHighAccuracy: true,
+//   //       timeout: 30000,
+//   //       maximumAge: 0,
+//   //     }
+//   //     // position => {
+//   //     //   console.log("POSITION:", position);
+
+//   //     //   const { latitude, longitude } = position.coords;
+//   //     //   setCurrentLocation({ latitude, longitude });
+//   //     // },
+//   //     // error => {
+//   //     //   console.log("GPS ERROR:", error);
+//   //     //   Alert.alert('Error', error.message);
+//   //     // },
+//   //     // {
+//   //     //   enableHighAccuracy: true,
+//   //     //   timeout: 30000,
+//   //     //   maximumAge: 0,
+//   //     //   forceRequestLocation: true,
+//   //     //   showLocationDialog: true,
+//   //     // }
+//   //   );
+//   // }
+
+//   // const openMaps = () => {
+//   //     if (!currentLocation) {
+//   //         Alert.alert('Location not available');
+//   //         return;
+//   //     }
+
+//   //     const { latitude, longitude } = currentLocation;
+
+//   //     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+
+//   //     Linking.openURL(url);
+//   // };
+
+//   // const DESTINATION = {
+//   //     latitude: 28.6139,
+//   //     longitude: 77.2090,
+//   // };
+
+//   const routeData = React.useMemo((): FeatureCollection<LineString> | null => {
+//     if (!currentLocation) return null;
+
+//     return {
+//       type: "FeatureCollection",
+//       features: [
+//         {
+//           type: "Feature",
+//           geometry: {
+//             type: "LineString",
+//             coordinates: [
+//               [currentLocation.longitude, currentLocation.latitude],
+//               [currentLocation.longitude + 0.01, currentLocation.latitude + 0.01],
+//             ],
+//           },
+//           properties: {},
+//         },
+//       ],
+//     };
+//   }, [currentLocation]);
+//   return (
+//     <View style={{ flex: 1, marginTop: 0 }}>
+//       <Text style={{ textAlign: 'center', marginTop: 10 }}>
+//         Get Coords
+//       </Text>
+
+//       <View style={{
+//         backgroundColor: 'white',
+//         padding: 10,
+//         margin: 10,
+//         alignItems: 'center'
+//       }}>
+//         <Text>
+//           Latitude: {currentLocation ? currentLocation.latitude : 'Loading...'}
+//         </Text>
+//         <Text>
+//           Longitude: {currentLocation ? currentLocation.longitude : 'Loading...'}
+//         </Text>
+//       </View>
+
+//       <TouchableOpacity onPress={requestPermission}>
+//         <View style={{
+//           backgroundColor: 'green',
+//           padding: 10,
+//           alignItems: 'center',
+//           margin: 10
+//         }}>
+//           <Text>Get Location</Text>
+//         </View>
+//       </TouchableOpacity>
+
+//       {currentLocation && (
+//         <View style={{ flex: 1 }}>
+//           <Map
+//             style={{ flex: 1 }}
+//             mapStyle="https://api.maptiler.com/maps/streets/style.json?key=jZZkhgZs93Nj55GxO7Bu"
+//           >
+//             <Camera
+//               center={[
+//                 currentLocation.longitude,
+//                 currentLocation.latitude,
+//               ]}
+//               zoom={15}
+//             />
+
+//             {routeData && (
+//               <GeoJSONSource id="route" data={routeData}>
+//                 <Layer
+//                   id="routeLine"
+//                   type="line"
+//                   style={{
+//                     lineColor: 'orange',
+//                     lineWidth: 4,
+//                     lineCap: 'round',
+//                     lineJoin: 'round',
+//                   }}
+//                 />
+//               </GeoJSONSource>
+//             )}
+
+//             <Marker
+//               id="user-location"
+//               lngLat={[
+//                 currentLocation.longitude,
+//                 currentLocation.latitude,
+//               ]}
+//             >
+//               <View
+//                 style={{
+//                   width: 18,
+//                   height: 18,
+//                   borderRadius: 9,
+//                   backgroundColor: 'red',
+//                   borderWidth: 2,
+//                   borderColor: 'white',
+//                 }}
+//               />
+//             </Marker>
+//           </Map>
+//         </View>
+//       )}
+//     </View>
+//   );
+//   // return (
+//   //     <View style={{ marginTop: 50 }}>
+//   //         <Text>Get Coords</Text>
+
+//   //         <View style={{ backgroundColor: 'white', padding: 10, margin: 10, alignItems: 'center' }}>
+//   //             <Text>
+//   //                 Latitude: {currentLocation ? currentLocation.latitude : 'Loading...'}
+//   //             </Text>
+//   //             <Text>
+//   //                 Longitude: {currentLocation ? currentLocation.longitude : 'Loading...'}
+//   //             </Text>
+//   //         </View>
+
+//   //         <TouchableOpacity onPress={requestPermission}>
+//   //             <View style={{ backgroundColor: 'green', padding: 10, alignItems: 'center', margin: 10 }}>
+//   //                 <Text>Get Location</Text>
+//   //             </View>
+//   //         </TouchableOpacity>
+
+//   //         {currentLocation && (
+//   //             <Map
+//   //                 style={{ flex: 1 }}
+//   //                 mapStyle="https://api.maptiler.com/maps/streets/style.json?key=jZZkhgZs93Nj55GxO7Bu"
+//   //             >
+
+//   //                 <Camera
+//   //                     center={[
+//   //                         currentLocation.longitude,
+//   //                         currentLocation.latitude,
+//   //                     ]}
+//   //                     zoom={15}
+//   //                 />
+
+//   //                 < GeoJSONSource id="route" data={routeGeoJSON as any}>
+//   //                     <Layer
+//   //                         id="routeLine"
+//   //                         type="line"
+//   //                         source="route"
+//   //                         style={{
+//   //                             lineColor: 'orange',
+//   //                             lineWidth: 4,
+//   //                             lineCap: 'round',
+//   //                             lineJoin: 'round',
+//   //                         }}
+//   //                     />
+//   //                 </ GeoJSONSource>
+
+//   //                 <Marker
+//   //                     id="user-location"
+//   //                     lngLat={[
+//   //                         currentLocation.longitude,
+//   //                         currentLocation.latitude,
+//   //                     ]}
+//   //                 >
+//   //                     <View
+//   //                         style={{
+//   //                             width: 18,
+//   //                             height: 18,
+//   //                             borderRadius: 9,
+//   //                             backgroundColor: 'red',
+//   //                             borderWidth: 2,
+//   //                             borderColor: 'white',
+//   //                         }}
+//   //                     />
+//   //                 </Marker>
+//   //             </Map>
+//   //         )}
+//   //     </View>
+//   // );
+// };
+
+//export default TrackOrderScreen;
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet, Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
+// import Geolocation from 'react-native-geolocation-service';
+// type LocationType = {
+//     coords: {
+//         latitude: number;
+//         longitude: number;
+//     };
+// } | null;
+// export default function App() {
+//     const [location, setLocation] = useState<LocationType>(null);
+
+//     const requestLocationPermission = async () => {
+//         if (Platform.OS === 'ios') return true;
+
+//         try {
+//             const granted = await PermissionsAndroid.request(
+//                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+//                 {
+//                     title: 'Location Permission',
+//                     message: 'App needs access to your location',
+//                     buttonPositive: 'OK',
+//                     buttonNegative: 'Cancel',
+//                 }
+//             );
+
+//             return granted === PermissionsAndroid.RESULTS.GRANTED;
+//         } catch (err) {
+//             console.warn(err);
+//             return false;
+//         }
+//     };
+
+//     const getLocation = async () => {
+//         const hasPermission = await requestLocationPermission();
+
+//         if (!hasPermission) {
+//             console.log('Location permission denied');
+//             return;
+//         }
+
+//         Geolocation.getCurrentPosition(
+//             (position) => {
+//                 console.log(position);
+//                 setLocation(position);
+//             },
+//             (error) => {
+//                 console.log(error.code, error.message);
+//                 setLocation(null);
+//             },
+//             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+//         );
+//     };
+
+//     return (
+//         <View style={styles.container}>
+//             <Text style={styles.title}>React Native Geolocation CLI</Text>
+//             <Button title="Get Location" onPress={getLocation} />
+//             {location && (
+//                 <View style={styles.resultBox}>
+//                     <Text>Latitude: {location.coords.latitude}</Text>
+//                     <Text>Longitude: {location.coords.longitude}</Text>
+//                 </View>
+//             )}
+//         </View>
+//     );
+// }
+
+// const styles = StyleSheet.create({
+//     container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+//     title: { fontSize: 20, marginBottom: 20 },
+//     resultBox: { marginTop: 20 },
+// });
 
 
 

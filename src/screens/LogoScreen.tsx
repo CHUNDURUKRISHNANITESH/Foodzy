@@ -26,7 +26,7 @@ type LogoScreenProps = {
   route: ScreenRouteProp<'Logo'>;
 };
 
-export default function LogoScreen({ navigation }: LogoScreenProps){
+export default function LogoScreen({ navigation }: LogoScreenProps) {
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -46,25 +46,25 @@ export default function LogoScreen({ navigation }: LogoScreenProps){
 
   return (
     <View style={styles.center}>
-        <Image source={require('./Logo.png')} style={{marginTop:'80%'}}/>
-        <Image source={require('../assets/ellipse.png')} style={styles.ellipse}/>
+      <Image source={require('./Logo.png')} style={{ marginTop: '80%' }} />
+      <Image source={require('../assets/ellipse.png')} style={styles.ellipse} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  center: { 
-    flex: 1, 
-    justifyContent: 'center', 
+  center: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  logo: { 
-    fontSize: 40, 
-    fontWeight: 'bold', 
+  logo: {
+    fontSize: 40,
+    fontWeight: 'bold',
   },
-  ellipse:{
-     marginTop:'40%',
-     marginLeft:'45%'
+  ellipse: {
+    marginTop: '40%',
+    marginLeft: '45%'
   }
 });
 
