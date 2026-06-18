@@ -25,6 +25,7 @@ import AddCardScreen from './src/screens/AddCardScreen';
 import PaymentSuccessScreen from './src/screens/PaymentSuccessScreen';
 import TrackOrderScreen from './src/screens/TrackOrderScreen';
 import { RestaurantProvider } from './src/context/RestaurantContext';
+import { LocationProvider } from './src/context/LocationContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -51,34 +52,36 @@ const toastConfig = {
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <RestaurantProvider>
-        <CartProvider>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Logo" component={LogoScreen} />
-              <Stack.Screen name="Favorites" component={FavoritesScreen} />
-              <Stack.Screen name="Chef" component={ChefScreen} />
-              <Stack.Screen name="Delivery" component={DeliveryScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Signup" component={SignupScreen} />
-              <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-              <Stack.Screen name="Verification" component={VerificationScreen} />
-              <Stack.Screen name="LocationAccess" component={LocationAccessScreen} />
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Search" component={SearchScreen} />
-              <Stack.Screen name="popularBurgers" component={PopularBurgers} />
-              <Stack.Screen name="foodDetails" component={FoodDetailsScreen} />
-              <Stack.Screen name="restaurantScreen" component={RestaurantScreen} />
-              <Stack.Screen name="cart" component={CartScreen} />
-              <Stack.Screen name="payment" component={PaymentScreen} />
-              <Stack.Screen name="addCard" component={AddCardScreen} />
-              <Stack.Screen name="paySuccess" component={PaymentSuccessScreen} />
-              <Stack.Screen name="trackOrder" component={TrackOrderScreen} />
-            </Stack.Navigator>
-            <Toast config={toastConfig} />
-          </NavigationContainer>
-        </CartProvider>
-      </RestaurantProvider>
+      <LocationProvider>
+        <RestaurantProvider>
+          <CartProvider>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Logo" component={LogoScreen} />
+                <Stack.Screen name="Favorites" component={FavoritesScreen} />
+                <Stack.Screen name="Chef" component={ChefScreen} />
+                <Stack.Screen name="Delivery" component={DeliveryScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Signup" component={SignupScreen} />
+                <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+                <Stack.Screen name="Verification" component={VerificationScreen} />
+                <Stack.Screen name="LocationAccess" component={LocationAccessScreen} />
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Search" component={SearchScreen} />
+                <Stack.Screen name="popularBurgers" component={PopularBurgers} />
+                <Stack.Screen name="foodDetails" component={FoodDetailsScreen} />
+                <Stack.Screen name="restaurantScreen" component={RestaurantScreen} />
+                <Stack.Screen name="cart" component={CartScreen} />
+                <Stack.Screen name="payment" component={PaymentScreen} />
+                <Stack.Screen name="addCard" component={AddCardScreen} />
+                <Stack.Screen name="paySuccess" component={PaymentSuccessScreen} />
+                <Stack.Screen name="trackOrder" component={TrackOrderScreen} />
+              </Stack.Navigator>
+              <Toast config={toastConfig} />
+            </NavigationContainer>
+          </CartProvider>
+        </RestaurantProvider>
+      </LocationProvider>
     </GestureHandlerRootView>
   );
 }

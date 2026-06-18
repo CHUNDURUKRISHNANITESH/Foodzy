@@ -233,7 +233,6 @@ const HomeScreen = () => {
 
       <ViewCart previousScreen="Home" />
 
-
       <Modal
         isVisible={showOfferPopup}
         backdropOpacity={0.6}
