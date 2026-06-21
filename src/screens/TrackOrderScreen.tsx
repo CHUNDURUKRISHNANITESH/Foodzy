@@ -16,10 +16,10 @@ import {
 } from '@maplibre/maplibre-react-native';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+ 
 //adb shell input keyevent 82
 
-type LocationType = {
+type LocationType = { 
   latitude: number;
   longitude: number;
 } | null;
@@ -28,9 +28,6 @@ const { width, height } = Dimensions.get('window');
 
 const TrackOrderScreen = () => {
   const navigation = useNavigation<any>();
-
-  const [userLocation, setUserLocation] =
-    useState<LocationType>(null);
 
   const [currentLocation, setCurrentLocation] =
     useState<LocationType>(null);
@@ -97,14 +94,44 @@ const TrackOrderScreen = () => {
       )}
 
       <View style={styles.header}>
-        <TouchableOpacity onPress={() =>
+        {/* <TouchableOpacity onPress={() => {
+          // navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: 'Home' }],
+          //   orderPlaced: true
+          // })
           navigation.reset({
             index: 0,
-            routes: [{ name: 'Home' }],
-          })
+            routes: [
+              {
+                name: 'Home',
+                params: {
+                  orderPlaced: true,
+                },
+              },
+            ],
+          });
+        }
         }>
           <View style={styles.backBtn}>
             <Icon name="chevron-back" size={23} color="white" />
+          </View>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Home' }],
+            })
+          }
+        >
+          <View style={styles.backBtn}>
+            <Icon
+              name="chevron-back"
+              size={23}
+              color="white"
+            />
           </View>
         </TouchableOpacity>
 
@@ -117,7 +144,7 @@ const TrackOrderScreen = () => {
         <View style={styles.orderInfoContainer}>
 
           <Image
-            source={selectedRestaurant.image}
+            source={{ uri: selectedRestaurant.image }}
             style={styles.restaurantImage}
           />
 
@@ -130,22 +157,10 @@ const TrackOrderScreen = () => {
             <Text style={styles.orderDate}>
               Order At 06 Sept, 10:00pm
             </Text>
-
-            {/* <Text style={styles.orderItem}>
-              ⭐ {selectedRestaurant.rating}
-            </Text>
-
-            <Text style={styles.orderItem}>
-              ⏱ {selectedRestaurant.time}
-            </Text>
-
-            <Text style={styles.orderItem}>
-              {selectedRestaurant.categories}
-            </Text> */}
           </View>
         </View>
       </View>
-    </View>
+    </View >
   );
 };
 

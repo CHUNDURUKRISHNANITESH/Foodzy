@@ -14,38 +14,38 @@ const { width, height } = Dimensions.get('window');
 export interface RestaurantItem {
     id: string;
     name: string;
-    image: ImageSourcePropType;
+    image: string;
     categories: string;
     rating: string;
     time: string;
-    carouselImages: ImageSourcePropType[];
+    carouselImages: string[];
 };
 
 const restaurants = [
     {
         id: '1',
         name: 'Rose Garden Restaurant',
-        image: require('../assets/rose_garden.png'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847366/rose_garden_lehcza.png',
         categories: 'Burger - Chicken - Riche - Wings',
         rating: '4.7',
         time: '20 min',
         carouselImages: [
-            require('../assets/rose_garden.png'),
-            require('../assets/sprouts.webp'),
-            require('../assets/restaurantPic.webp'),
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847366/rose_garden_lehcza.png',
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/sprouts_gnpizn.webp',
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847287/restaurantPic_pzhsrb.webp',
         ],
     },
     {
         id: '2',
         name: 'Green Bowl Restaurant',
-        image: require('../assets/sprouts.webp'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/sprouts_gnpizn.webp',
         categories: 'Healthy - Salad - Bowl',
         rating: '4.5',
         time: '25 min',
         carouselImages: [
-            require('../assets/sprouts.webp'),
-            require('../assets/restaurantPic.webp'),
-            require('../assets/rose_garden.png'),
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/sprouts_gnpizn.webp',
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847287/restaurantPic_pzhsrb.webp',
+            'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847366/rose_garden_lehcza.png',
         ],
     },
 ];
@@ -65,9 +65,9 @@ const Restaurants = () => {
         item: RestaurantItem;
     }) => {
         return (
-            <TouchableOpacity style={styles.restaurantCard} onPress={() => onSelectRestaurant(item)}>
+            <TouchableOpacity style={styles.restaurantCard} activeOpacity={0.9} onPress={() => onSelectRestaurant(item)}>
 
-                <Image source={item.image} style={styles.restaurantImage} />
+                <Image source={{uri:item.image}} style={styles.restaurantImage} />
 
                 <Text style={styles.restaurantName}>
                     {item.name}
@@ -86,7 +86,7 @@ const Restaurants = () => {
                     </View>
 
                     <View style={styles.infoRow}>
-                        <Image source={require('../assets/deliveryTruck.png')} />
+                        <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/deliveryTruck_shahnw.png'}} />
                         <Text style={styles.deliveryText}>
                             Free
                         </Text>

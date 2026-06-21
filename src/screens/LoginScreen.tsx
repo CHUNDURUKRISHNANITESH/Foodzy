@@ -58,7 +58,7 @@ export default function LoginScreen({ navigation }: any) {
     }
     let valid = true;
     if (!email.trim()) {
-      Toast.show({ type: 'error', text1: 'Email is required'});
+      Toast.show({ type: 'error', text1: 'Email is required' });
       setEmailBorder('red'); valid = false;
     } else if (!email.endsWith('@gmail.com')) {
       Toast.show({ type: 'error', text1: 'Email must be @gmail.com' });
@@ -84,8 +84,8 @@ export default function LoginScreen({ navigation }: any) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>
-        <Image source={require('../assets/Ellipsee.png')} style={styles.leftDesign} />
-        <Image source={require('../assets/Vector.png')} style={styles.rightDesign} />
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/Ellipsee_nlheuv.png' }} style={styles.leftDesign} />
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/Vector_qyriob.png' }} style={styles.rightDesign} />
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.subtitle}>Please sign in to your existing account</Text>
       </View>
@@ -111,25 +111,26 @@ export default function LoginScreen({ navigation }: any) {
               secureTextEntry={secure}
               style={styles.passwordInput}
             />
-            <TouchableOpacity onPress={() => setSecure(!secure)}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => setSecure(!secure)}>
               <Icon name={secure ? 'eye-slash' : 'eye'} size={width * 0.05} color="#B4B9CA" />
             </TouchableOpacity>
           </View>
 
           <View style={styles.row}>
-            <View style={{ flexDirection: 'row', gap:'6%' }}>
-              <TouchableOpacity style={styles.rememberRow} onPress={() => setRemember(!remember)}>
+            <View style={{ flexDirection: 'row', gap: '6%' }}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.rememberRow} onPress={() => setRemember(!remember)}>
                 {remember && <Icon name="check" size={16} color="black" />}
               </TouchableOpacity>
               <Text style={styles.rememberText}>Remember me</Text>
             </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={styles.forgot}>Forgot Password</Text>
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity
+            activeOpacity={0.9}
             style={styles.button}
             onPress={validateLogin}
           >
@@ -138,20 +139,20 @@ export default function LoginScreen({ navigation }: any) {
 
           <View style={styles.signupRow}>
             <Text style={styles.signupText}>Don’t have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.signupBtn}>SIGN UP</Text>
             </TouchableOpacity>
           </View>
 
           <Text style={styles.or}>Or</Text>
           <View style={styles.socialContainer}>
-            <TouchableOpacity style={styles.facebook}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.facebook}>
               <Icon name="facebook" size={width * 0.07} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.twitter}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.twitter}>
               <Icon name="twitter" size={width * 0.07} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.apple}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.apple}>
               <Icon name="apple" size={width * 0.07} color="white" />
             </TouchableOpacity>
           </View>
@@ -166,12 +167,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
+    width: width * 0.42,
+    height: width * 0.42,
 
   },
   rightDesign: {
     position: 'absolute',
     right: 0,
     top: 0,
+    width: width * 0.26,
+    height: height * 0.42
   },
   mainContainer: {
     flex: 1,
@@ -220,7 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F1F4F9',
     borderRadius: 8,
-    paddingRight:15
+    paddingRight: 15
   },
   passwordInput: {
     flex: 1,

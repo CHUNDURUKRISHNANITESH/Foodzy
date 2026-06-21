@@ -105,7 +105,7 @@ export default function AddCardScreen() {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
             <View style={styles.mainContainer}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.closeButton} onPress={() => navigation.goBack()}>
                         <Text style={styles.delete}>
                             ✕
                         </Text>
@@ -159,6 +159,7 @@ export default function AddCardScreen() {
                 </View>
 
                 <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.button}
                     onPress={() => {
                         if (!validateCard()) return;
@@ -168,7 +169,6 @@ export default function AddCardScreen() {
                 >
                     <Text style={styles.buttonText}>ADD & MAKE PAYMENT</Text>
                 </TouchableOpacity>
-
             </View>
         </ScrollView>
     );

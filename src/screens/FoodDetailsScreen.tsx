@@ -31,23 +31,23 @@ type FoodDetailsRouteProp = RouteProp<
 const ingredients = [
     {
         id: '1',
-        image: require('../assets/saltPic.png')
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847287/saltPic_comhbi.png'
     },
     {
         id: '2',
-        image: require('../assets/chickenPic.png')
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847264/chickenPic_qzzhdu.png'
     },
     {
         id: '3',
-        image: require('../assets/onionPic.png')
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847268/onionPic_whi9oe.png'
     },
     {
         id: '4',
-        image: require('../assets/cumcumberPic.png')
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847264/cumcumberPic_gvzbki.png'
     },
     {
         id: '5',
-        image: require('../assets/carrotPic.png')
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847263/carrotPic_ukvyz1.png'
     },
 ];
 
@@ -80,7 +80,7 @@ const FoodDetailsScreen = () => {
                 showsVerticalScrollIndicator={false}>
 
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => { navigation.navigate('popularBurgers') }}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.backButton} onPress={() => { navigation.navigate('popularBurgers') }}>
                         <Icon name="chevron-back" size={28} color="#1E1E2E" />
                     </TouchableOpacity>
 
@@ -96,6 +96,7 @@ const FoodDetailsScreen = () => {
                     />
 
                     <TouchableOpacity
+                        activeOpacity={0.9}
                         style={styles.favoriteButton}
                         onPress={toggleFavorite}
                     >
@@ -108,9 +109,9 @@ const FoodDetailsScreen = () => {
 
                 </View>
 
-                <TouchableOpacity style={styles.restaurantTag}>
+                <TouchableOpacity activeOpacity={0.9} style={styles.restaurantTag}>
                     <View style={styles.restaurantIcon}>
-                        <Image source={require('../assets/ellipseUttora.png')}></Image>
+                        <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/ellipseUttora_e2cs3o.png'}}></Image>
                     </View>
 
                     <Text style={styles.restaurantText}>
@@ -132,12 +133,12 @@ const FoodDetailsScreen = () => {
                 <View style={styles.infoContainer}>
 
                     <View style={styles.infoRow}>
-                        <Image source={require('../assets/starRating.png')}></Image>
+                        <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847372/starRating_pvpbo2.png'}}></Image>
                         <Text style={styles.infoText}>4.7</Text>
                     </View>
 
                     <View style={styles.infoRow}>
-                        <Image source={require('../assets/deliveryTruck.png')}></Image>
+                        <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/deliveryTruck_shahnw.png'}}></Image>
                         <Text style={styles.deliveryText}>Free</Text>
                     </View>
 
@@ -158,7 +159,7 @@ const FoodDetailsScreen = () => {
                             return (
                                 <TouchableOpacity
                                     key={size}
-                                    activeOpacity={0.8}
+                                    activeOpacity={0.9}
                                     onPress={() => setSelectedSize(size)}
                                     style={[
                                         styles.sizeButton,
@@ -187,10 +188,11 @@ const FoodDetailsScreen = () => {
 
                     {ingredients.map(item => (
                         <TouchableOpacity
+                            activeOpacity={0.9}
                             key={item.id}
                             style={styles.ingredientButton}>
 
-                            <Image source={item.image}></Image>
+                            <Image source={{uri:item.image}}></Image>
                         </TouchableOpacity>
                     ))}
 
@@ -208,7 +210,7 @@ const FoodDetailsScreen = () => {
 
                         <View style={styles.number}>
                             <TouchableOpacity
-                                activeOpacity={0.8}
+                                activeOpacity={0.9}
                                 style={styles.actionButton}
                                 onPress={() => {
                                     quantity > 1 && setQuantity(quantity - 1)
@@ -223,7 +225,7 @@ const FoodDetailsScreen = () => {
                             </Text>
 
                             <TouchableOpacity
-                                activeOpacity={0.8}
+                                activeOpacity={0.9}
                                 style={styles.actionButton}
                                 onPress={() => {
                                     setQuantity(quantity + 1)
@@ -236,6 +238,7 @@ const FoodDetailsScreen = () => {
                 </View>
 
                 <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.cartButton}
                     onPress={() => {
                         addToCart({

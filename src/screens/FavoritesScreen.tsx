@@ -8,7 +8,7 @@ import { Image } from 'react-native';
 export default function FavoritesScreen({ navigation }: ScreenProps<'Favorites'>) {
   return (
     <View style={styles.center}>
-      <Image source={require('../assets/favorites.png')} style={styles.favorite}/>
+      <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/favorites_o9yvv0.webp'}} style={styles.favorite}/>
       <Text style={styles.title}>All your favorites</Text>
       <Text style={styles.subtitle}>
         Get all your loved foods in one place, you just place the order we do the rest
@@ -17,10 +17,10 @@ export default function FavoritesScreen({ navigation }: ScreenProps<'Favorites'>
       <Pagination total={3} currentIndex={0} />
 
       <View>
-        <TouchableOpacity onPress={() => navigation.navigate('Chef')} style={styles.next}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Chef')} style={styles.next}>
           <Text style={styles.textNext}>NEXT</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.skip}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Login')} style={styles.skip}>
           <Text style={styles.textSkip}>Skip</Text>
         </TouchableOpacity>
       </View>

@@ -11,6 +11,8 @@ export type Restaurant = {
     id: string;
     name: string;
     image: any;
+    carouselImages: string[];
+    
 };
 
 type RestaurantContextType = {

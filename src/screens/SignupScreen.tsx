@@ -104,177 +104,173 @@ export default function SignupScreen({ navigation, }: any) {
 
 
   return (
-        <View style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
 
-          <View style={styles.topContainer}>
+      <View style={styles.topContainer}>
 
-            <Image
-              source={require('../assets/Ellipsee.png')}
-              style={styles.leftDesign}
-            />
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/Ellipsee_nlheuv.png' }} style={styles.leftDesign} />
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/Vector_qyriob.png' }} style={styles.rightDesign} />
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.backButton}
+          onPress={() =>
+            navigation.goBack()
+          }>
 
-            <Image
-              source={require('../assets/Vector.png')}
-              style={styles.rightDesign}
-            />
+          <Icon
+            name="chevron-left"
+            size={width * 0.05}
+            color="black"
+          />
 
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() =>
-                navigation.goBack()
-              }>
+        </TouchableOpacity>
 
-              <Icon
-                name="chevron-left"
-                size={width * 0.05}
-                color="black"
-              />
+        <Text style={styles.title}>
+          Sign Up
+        </Text>
 
-            </TouchableOpacity>
+        <Text style={styles.subtitle}>
+          Please sign up to get
+          started
+        </Text>
 
-            <Text style={styles.title}>
-              Sign Up
+      </View>
+
+      <Animated.View style={{ flex: 1, backgroundColor: 'black', transform: [{ translateY: shiftAnim }] }}>
+        <View style={styles.bottomContainer}>
+
+          <View style={styles.section}>
+
+            <Text style={styles.label}>
+              NAME
             </Text>
 
-            <Text style={styles.subtitle}>
-              Please sign up to get
-              started
+            <TextInput
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+              style={[styles.input, { borderColor: nameBorder }]}
+            />
+          </View>
+
+          <View style={styles.section}>
+
+            <Text style={styles.label}>
+              EMAIL
             </Text>
+
+
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              style={[styles.input, { borderColor: emailBorder }]}
+            />
 
           </View>
 
-          <Animated.View style={{ flex: 1, backgroundColor: 'black', transform: [{ translateY: shiftAnim }] }}>
-            <View style={styles.bottomContainer}>
+          <View style={styles.section}>
 
-              <View style={styles.section}>
+            <Text style={styles.label}>
+              PASSWORD
+            </Text>
 
-                <Text style={styles.label}>
-                  NAME
-                </Text>
+            <View
+              style={[styles.passwordRow, { borderColor: passwordBorder }]}>
 
-                <TextInput
-                  placeholder="Name"
-                  value={name}
-                  onChangeText={setName}
-                  style={[styles.input, { borderColor: nameBorder }]}
-                />
-              </View>
-
-              <View style={styles.section}>
-
-                <Text style={styles.label}>
-                  EMAIL
-                </Text>
-
-
-                <TextInput
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  style={[styles.input, { borderColor: emailBorder }]}
-                />
-
-              </View>
-
-              <View style={styles.section}>
-
-                <Text style={styles.label}>
-                  PASSWORD
-                </Text>
-
-                <View
-                  style={[styles.passwordRow, { borderColor: passwordBorder }]}>
-
-                  <TextInput
-                    placeholder="* * * * * * * * *"
-                    placeholderTextColor="#999"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={secure}
-                    style={[styles.inputPassword]}
-                  />
-
-                  <TouchableOpacity
-                  style={{paddingRight:'4%'}}
-                    onPress={() =>
-                      setSecure(!secure)
-                    }>
-
-                    <Icon
-                      name={
-                        secure
-                          ? 'eye-slash'
-                          : 'eye'
-                      }
-                      size={width * 0.05}
-                      color="#B4B9CA"
-                    />
-
-                  </TouchableOpacity>
-
-                </View>
-
-              </View>
-
-              <View style={styles.section}>
-
-                <Text style={styles.label}>
-                  RE-TYPE PASSWORD
-                </Text>
-
-                <View
-                  style={[styles.passwordRow, { borderColor: passwordBorder }]}>
-
-                  <TextInput
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor="#999"
-                    value={confirmBorder}
-                    onChangeText={setConfirmBorder}
-                    secureTextEntry={confirmSecure}
-                    style={styles.inputPassword}
-                  />
-
-                  <TouchableOpacity
-                  style={{paddingRight:'4%'}}
-                    onPress={() =>
-                      setConfirmSecure(
-                        !confirmSecure,
-                      )
-                    }>
-
-                    <Icon
-                      name={
-                        confirmSecure
-                          ? 'eye-slash'
-                          : 'eye'
-                      }
-                      size={width * 0.05}
-                      color="#B4B9CA"
-                    />
-
-                  </TouchableOpacity>
-
-                </View>
-
-              </View>
+              <TextInput
+                placeholder="* * * * * * * * *"
+                placeholderTextColor="#999"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={secure}
+                style={[styles.inputPassword]}
+              />
 
               <TouchableOpacity
-                style={styles.button}
-                onPress={
-                  validateSignup
+                activeOpacity={0.9}
+                style={{ paddingRight: '4%' }}
+                onPress={() =>
+                  setSecure(!secure)
                 }>
 
-                <Text
-                  style={styles.buttonText}>
-                  SIGN UP
-                </Text>
+                <Icon
+                  name={
+                    secure
+                      ? 'eye-slash'
+                      : 'eye'
+                  }
+                  size={width * 0.05}
+                  color="#B4B9CA"
+                />
 
               </TouchableOpacity>
 
             </View>
-          </Animated.View>
+
+          </View>
+
+          <View style={styles.section}>
+
+            <Text style={styles.label}>
+              RE-TYPE PASSWORD
+            </Text>
+
+            <View
+              style={[styles.passwordRow, { borderColor: passwordBorder }]}>
+
+              <TextInput
+                placeholder="* * * * * * * *"
+                placeholderTextColor="#999"
+                value={confirmBorder}
+                onChangeText={setConfirmBorder}
+                secureTextEntry={confirmSecure}
+                style={styles.inputPassword}
+              />
+
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{ paddingRight: '4%' }}
+                onPress={() =>
+                  setConfirmSecure(
+                    !confirmSecure,
+                  )
+                }>
+
+                <Icon
+                  name={
+                    confirmSecure
+                      ? 'eye-slash'
+                      : 'eye'
+                  }
+                  size={width * 0.05}
+                  color="#B4B9CA"
+                />
+
+              </TouchableOpacity>
+
+            </View>
+
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={styles.button}
+            onPress={
+              validateSignup
+            }>
+
+            <Text
+              style={styles.buttonText}>
+              SIGN UP
+            </Text>
+
+          </TouchableOpacity>
 
         </View>
+      </Animated.View>
+
+    </View>
   );
 }
 
@@ -401,7 +397,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingVertical: 18,
-    paddingLeft:'4%',
+    paddingLeft: '4%',
     fontSize: 16,
     width: '90%',
     borderColor: 'transparent'

@@ -17,19 +17,19 @@ const restaurants = [
     id: '1',
     name: 'Pansi Restaurant',
     rating: '4.7',
-    image: require('../assets/restaurantPic.webp'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847287/restaurantPic_pzhsrb.webp',
   },
   {
     id: '2',
     name: 'American Spicy Burger Shop',
     rating: '4.3',
-    image: require('../assets/burger_shop.jpg'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847261/burger_shop_syqkot.jpg',
   },
   {
     id: '3',
     name: 'Cafenio Coffee Club',
     rating: '4.0',
-    image: require('../assets/coffee_club.webp'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847265/coffee_club_rnebnj.webp',
   },
 ];
 
@@ -38,19 +38,19 @@ const fastFoods = [
     id: '1',
     title: 'European Pizza',
     subtitle: 'Uttora Coffe House',
-    image: require('../assets/pizzaEurope.jpg'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847270/pizzaEurope_sje9hj.jpg',
   },
   {
     id: '2',
     title: 'Buffalo Pizza.',
     subtitle: 'Cafenio Coffee Club',
-    image: require('../assets/pizza.jpg'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847269/pizza_lrmr0w.jpg',
   },
 ];
 
 const SearchScreen = () => {
   const navigation = useNavigation<any>();
-    const { totalItems } = useCart();
+  const { totalItems } = useCart();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -59,7 +59,7 @@ const SearchScreen = () => {
 
         <View style={styles.headerContainer}>
           <View style={styles.search}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.backButton} onPress={() => navigation.navigate('Home')}>
               <Icon name="chevron-back" size={24} color="#181C2E" />
             </TouchableOpacity>
 
@@ -67,11 +67,12 @@ const SearchScreen = () => {
           </View>
 
           <TouchableOpacity
+            activeOpacity={0.9}
             style={styles.cartButton}
             onPress={() => navigation.navigate('cart')}
           >
             <Image
-              source={require('../assets/bagIcon.png')}
+              source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847261/bagIcon_qdmcjl.png'}}
               style={styles.bag}
             />
 
@@ -94,7 +95,7 @@ const SearchScreen = () => {
             style={styles.input}
           />
 
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.9}>
             <Icon name="close-circle" size={22} color="#C7C7C7" />
           </TouchableOpacity>
         </View>
@@ -120,7 +121,7 @@ const SearchScreen = () => {
                     ? sandwichData
                     : [];
             return (
-              <TouchableOpacity style={styles.keywordButton} onPress={() => {
+              <TouchableOpacity activeOpacity={0.9} style={styles.keywordButton} onPress={() => {
                 navigation.navigate('popularBurgers', {
                   displayData: filteredData,
                   title: item,
@@ -136,9 +137,9 @@ const SearchScreen = () => {
         <Text style={styles.sectionTitle}>Suggested Restaurants</Text>
 
         {restaurants.map(item => (
-          <TouchableOpacity key={item.id} style={styles.restaurantContainer}>
+          <TouchableOpacity activeOpacity={0.9} key={item.id} style={styles.restaurantContainer}>
             <Image
-              source={item.image}
+              source={{uri:item.image}}
               style={styles.restaurantImage}
             />
 
@@ -146,7 +147,7 @@ const SearchScreen = () => {
               <Text style={styles.restaurantName}>{item.name}</Text>
 
               <View style={styles.ratingRow}>
-                <Image source={require('../assets/Star.png')}></Image>
+                <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847371/Star_bewk0b.png'}}></Image>
 
                 <Text style={styles.ratingText}>{item.rating}</Text>
               </View>
@@ -163,9 +164,9 @@ const SearchScreen = () => {
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.foodCard}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.foodCard}>
               <Image
-                source={item.image}
+                source={{uri:item.image}}
                 style={styles.foodImage}
               />
 
@@ -178,7 +179,7 @@ const SearchScreen = () => {
           )}
         />
       </ScrollView>
-      
+
       <ViewCart previousScreen="Search" />
     </SafeAreaView>
   );

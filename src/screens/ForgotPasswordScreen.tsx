@@ -61,55 +61,50 @@ export default function ForgotPasswordScreen({ navigation }: any) {
       return;
     }
     else {
-          Toast.show({ type: 'success', text1: 'Code sent to your email 🎉' });
-          navigation.navigate('Verification', { email });
-        }
+      Toast.show({ type: 'success', text1: 'Code sent to your email 🎉' });
+      navigation.navigate('Verification', { email });
+    }
     setEmailBorder('transparent');
   };
 
   return (
-        <View style={styles.mainContainer}>
-          <ImageBackground style={styles.topContainer}>
-            <Image
-              source={require('../assets/Ellipsee.png')}
-              style={styles.leftDesign}
-            />
-            <Image
-              source={require('../assets/Vector.png')}
-              style={styles.rightDesign}
-            />
+    <View style={styles.mainContainer}>
+      <ImageBackground style={styles.topContainer}>
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/Ellipsee_nlheuv.png' }} style={styles.leftDesign} />
+        <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/Vector_qyriob.png' }} style={styles.rightDesign} />
 
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Icon name="chevron-left" size={width * 0.05} color="black" />
-            </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="chevron-left" size={width * 0.05} color="black" />
+        </TouchableOpacity>
 
-            <Text style={styles.title}>Forgot Password</Text>
-            <Text style={styles.subtitle}>
-              Please sign in to your existing account
-            </Text>
-          </ImageBackground>
+        <Text style={styles.title}>Forgot Password</Text>
+        <Text style={styles.subtitle}>
+          Please sign in to your existing account
+        </Text>
+      </ImageBackground>
 
-          <Animated.View style={{ flex: 1, backgroundColor: 'black', transform: [{ translateY: shiftAnim }] }}>
+      <Animated.View style={{ flex: 1, backgroundColor: 'black', transform: [{ translateY: shiftAnim }] }}>
 
-            <View style={styles.bottomContainer}>
-              <Text style={styles.label}>EMAIL</Text>
-              <TextInput
-                placeholder="example@gmail.com"
-                placeholderTextColor="#999"
-                value={email}
-                onChangeText={setEmail}
-                style={[styles.input, { borderColor: emailBorder }]}
-              />
+        <View style={styles.bottomContainer}>
+          <Text style={styles.label}>EMAIL</Text>
+          <TextInput
+            placeholder="example@gmail.com"
+            placeholderTextColor="#999"
+            value={email}
+            onChangeText={setEmail}
+            style={[styles.input, { borderColor: emailBorder }]}
+          />
 
-              <TouchableOpacity style={styles.button} onPress={handleSendCode}>
-                <Text style={styles.buttonText}>SEND CODE</Text>
-              </TouchableOpacity>
-            </View>
-          </Animated.View>
+          <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handleSendCode}>
+            <Text style={styles.buttonText}>SEND CODE</Text>
+          </TouchableOpacity>
         </View>
+      </Animated.View>
+    </View>
   );
 }
 

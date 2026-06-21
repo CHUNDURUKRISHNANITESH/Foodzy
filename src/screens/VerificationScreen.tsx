@@ -112,10 +112,9 @@ export default function VerificationScreen({ navigation, route }: any) {
     return (
         <View style={styles.mainContainer}>
             <ImageBackground style={styles.topContainer}>
-                <Image source={require('../assets/Ellipsee.png')} style={styles.leftDesign} />
-                <Image source={require('../assets/Vector.png')} style={styles.rightDesign} />
-
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/Ellipsee_nlheuv.png' }} style={styles.leftDesign} />
+                <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/Vector_qyriob.png' }} style={styles.rightDesign} />
+                <TouchableOpacity activeOpacity={0.9} style={styles.backButton} onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={width * 0.05} color="black" />
                 </TouchableOpacity>
 
@@ -131,7 +130,7 @@ export default function VerificationScreen({ navigation, route }: any) {
                         {timer > 0 ? (
                             <Text style={styles.resend}>Resend in {timer}s</Text>
                         ) : (
-                            <TouchableOpacity onPress={handleResend}>
+                            <TouchableOpacity activeOpacity={0.9} onPress={handleResend}>
                                 <Text style={[styles.resend, { color: '#FF7A1A' }]}>Resend Code</Text>
                             </TouchableOpacity>
                         )}
@@ -169,7 +168,7 @@ export default function VerificationScreen({ navigation, route }: any) {
                         ))}
                     </View>
 
-                    <TouchableOpacity style={styles.button} onPress={handleVerify}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handleVerify}>
                         <Text style={styles.buttonText}>VERIFY</Text>
                     </TouchableOpacity>
                 </View>

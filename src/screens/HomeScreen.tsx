@@ -5,13 +5,14 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Restaurants from '../components/Restaurants';
 import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ViewCart from '../components/ViewCart';
 import { useCart } from '../context/Cart';
+import { useOrder } from '../context/OrderContext';
 
 const { width, height } = Dimensions.get('window');
 //adb shell input keyevent 82
@@ -19,13 +20,13 @@ type CategoryItem = {
   id: string;
   name: string;
   icon?: string;
-  image?: ImageSourcePropType;
+  image?: string;
   active?: boolean;
 };
 
 type FoodCardItem = {
   id: string;
-  image: ImageSourcePropType,
+  image: string,
   name: string;
   startingPrice: string,
   value: string
@@ -35,39 +36,39 @@ const categories = [
   {
     id: '1',
     name: 'All',
-    image: require('../assets/hot-icon.webp'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847268/hot-icon_fbbdoz.webp',
     active: true,
   },
   {
     id: '2',
     name: 'Hot Dog',
-    image: require('../assets/hot_dog.png'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/hot_dog_peyahl.png',
   },
   {
     id: '3',
     name: 'Burger',
-    image: require('../assets/burger.png'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847263/burger_thjpa8.jpg',
   },
 ];
 
 const foodCard = [
   {
     id: '1',
-    image: require('../assets/pizzaImage.jpg'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847273/pizzaImage_ebuyga.avif',
     name: 'Pizza',
     startingPrice: 'Starting',
     value: '$70'
   },
   {
     id: '2',
-    image: require('../assets/burger.webp'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847262/burger_y5pudi.webp',
     name: 'Burger',
     startingPrice: 'Starting',
     value: '$50'
   },
   {
     id: '3',
-    image: require('../assets/pizzaPic.jpg'),
+    image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847284/pizzaPic_t1dz7u.jpg',
     name: 'Pizza',
     startingPrice: 'Starting',
     value: '$60'
@@ -79,6 +80,7 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const navigation = useNavigation<any>();
   const { totalItems } = useCart();
+  const { orderPlaced } = useOrder();
 
   useEffect(() => {
     const checkOffer = async () => {
@@ -106,7 +108,7 @@ const HomeScreen = () => {
   }) => {
     const isActive = selectedCategory === item.name;
     return (
-      <TouchableOpacity style={[styles.categoryCard, isActive && styles.activeCategoryCard,]} onPress={() =>
+      <TouchableOpacity activeOpacity={0.9} style={[styles.categoryCard, isActive && styles.activeCategoryCard,]} onPress={() =>
         setSelectedCategory(item.name)
       }>
         {item.icon ? (
@@ -114,7 +116,7 @@ const HomeScreen = () => {
             styles.activeFireContainer]}>
             <FontAwesome5 name={item.icon} size={22} color="#FF7A00" />
           </View>
-        ) : (<Image source={item.image} style={styles.categoryImage} />)}
+        ) : (<Image source={{ uri: item.image }} style={styles.categoryImage} />)}
 
         <Text style={styles.categoryText}>
           {item.name}
@@ -127,8 +129,8 @@ const HomeScreen = () => {
     item: FoodCardItem;
   }) => {
     return (
-      <TouchableOpacity style={styles.foodContainer}>
-        <Image source={item.image} style={styles.foodImage}></Image>
+      <TouchableOpacity activeOpacity={0.9} style={styles.foodContainer}>
+        <Image source={{ uri: item.image }} style={styles.foodImage}></Image>
         <Text style={styles.foodName}>{item.name}</Text>
         <View style={styles.foodPrice}>
           <Text style={styles.startingText}>{item.startingPrice}</Text>
@@ -143,8 +145,8 @@ const HomeScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40, }}>
 
         <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.menuButton}>
-            <Image source={require('../assets/Menu.png')}></Image>
+          <TouchableOpacity style={styles.menuButton} activeOpacity={0.9}>
+            <Image style={styles.menu} source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847268/Menu_zmxs9h.png' }}></Image>
           </TouchableOpacity>
 
           <View style={styles.locationContainer}>
@@ -163,10 +165,11 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             style={styles.cartButton}
+            activeOpacity={0.9}
             onPress={() => navigation.navigate('cart')}
           >
             <Image
-              source={require('../assets/bagIcon.png')}
+              source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847261/bagIcon_qdmcjl.png' }}
               style={styles.bag}
             />
 
@@ -189,7 +192,7 @@ const HomeScreen = () => {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.searchContainer} activeOpacity={0.8}
+        <TouchableOpacity style={styles.searchContainer} activeOpacity={0.9}
           onPress={() => navigation.navigate('Search')}>
           <Icon name="search-outline" size={24} color="#A0A5BA" />
           <Text style={styles.searchInput} >Search dishes, restaurants</Text>
@@ -200,7 +203,7 @@ const HomeScreen = () => {
             All Categories
           </Text>
 
-          <TouchableOpacity style={styles.seeAllRow}>
+          <TouchableOpacity style={styles.seeAllRow} activeOpacity={0.9}>
             <Text style={styles.seeAllText}>
               See All
             </Text>
@@ -220,7 +223,7 @@ const HomeScreen = () => {
             Open Restaurants
           </Text>
 
-          <TouchableOpacity style={styles.seeAllRow}>
+          <TouchableOpacity style={styles.seeAllRow} activeOpacity={0.9}>
             <Text style={styles.seeAllText}>
               See All
             </Text>
@@ -231,7 +234,19 @@ const HomeScreen = () => {
         <Restaurants />
       </ScrollView>
 
-      <ViewCart previousScreen="Home" />
+      {orderPlaced ? (
+        <TouchableOpacity
+          style={styles.trackOrderButton}
+          onPress={() => navigation.navigate('trackOrder')}
+          activeOpacity={0.9}
+        >
+          <Text style={styles.trackOrderText}>
+            TRACK ORDER
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <ViewCart previousScreen="Home" />
+      )}
 
       <Modal
         isVisible={showOfferPopup}
@@ -244,7 +259,7 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             style={styles.closeButton}
-            activeOpacity={0.8}
+            activeOpacity={0.9}
             onPress={closePopup}>
 
             <Icon name="close" size={28} color="#EF761A" />
@@ -256,14 +271,14 @@ const HomeScreen = () => {
             end={{ x: 1, y: 1 }}
             style={styles.offerCard}>
 
-            <Image source={require('../assets/Triangle.png')} style={styles.shape1}></Image>
-            <Image source={require('../assets/Triangle2.png')} style={styles.shape2}></Image>
-            <Image source={require('../assets/Triangle3.png')} style={styles.shape3}></Image>
-            <Image source={require('../assets/Triangle4.png')} style={styles.shape4}></Image>
-            <Image source={require('../assets/Triangle5.png')} style={styles.shape5}></Image>
-            <Image source={require('../assets/Triangle6.png')} style={styles.shape6}></Image>
-            <Image source={require('../assets/Triangle7.png')} style={styles.shape7}></Image>
-            <Image source={require('../assets/vectorPic.png')} style={styles.shape8}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847373/Triangle_vuh2es.png' }} style={styles.shape1}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847373/Triangle2_cbtz6w.png' }} style={styles.shape2}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847374/Triangle3_etrvdd.png' }} style={styles.shape3}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847374/Triangle4_qup97h.png' }} style={styles.shape4}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847375/Triangle5_uquxms.png' }} style={styles.shape5}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847375/Triangle6_rjqr4m.png' }} style={styles.shape6}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847375/Triangle7_kbfitu.png' }} style={styles.shape7}></Image>
+            <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847376/vectorPic_ln1tuf.png' }} style={styles.shape8}></Image>
 
             <Text style={styles.offerTitle}>
               Hurry Offers!
@@ -278,7 +293,7 @@ const HomeScreen = () => {
             </Text>
 
             <TouchableOpacity
-              activeOpacity={0.8}
+              activeOpacity={0.9}
               style={styles.gotItButton}
               onPress={closePopup}>
 
@@ -298,6 +313,24 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  menu: {
+    width: width * 0.05,
+    height: height * 0.05
+  },
+  trackOrderButton: {
+    height: 60,
+    borderRadius: 16,
+    backgroundColor: '#FF7A00',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20
+  },
+
+  trackOrderText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontFamily: 'Sen-Bold',
+  },
   popupContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -644,11 +677,5 @@ const styles = StyleSheet.create({
 
   activeCategoryText: {
     color: '#1E1E2E',
-  },
-
-  // infoRow: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginRight: 24,
-  // },
+  }
 });

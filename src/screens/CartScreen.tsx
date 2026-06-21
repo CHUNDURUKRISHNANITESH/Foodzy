@@ -12,9 +12,7 @@ import {
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { useNavigation } from '@react-navigation/native';
-
 import { useCart } from '../context/Cart';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -55,6 +53,7 @@ const CartItemRow = React.memo(
 
                         <View style={styles.quantityRow}>
                             <TouchableOpacity
+                                activeOpacity={0.9}
                                 style={styles.qtyBtn}
                                 onPress={() =>
                                     decreaseQuantity(item.id)
@@ -71,6 +70,7 @@ const CartItemRow = React.memo(
                             </Text>
 
                             <TouchableOpacity
+                                activeOpacity={0.9}
                                 style={styles.qtyBtn}
                                 onPress={() => {
                                     increaseQuantity(item.id);
@@ -87,6 +87,7 @@ const CartItemRow = React.memo(
                 </View>
 
                 <TouchableOpacity
+                    activeOpacity={0.9}
                     onPress={() =>
                         removeItem(item.id)
                     }>
@@ -242,12 +243,27 @@ const CartScreen = () => {
         [increaseQuantity, decreaseQuantity, removeItem]
     );
 
+    if (cartItems.length === 0) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Text>Cart is Empty</Text>
+            </View>
+        );
+    }
+
     return (
         <SafeAreaView style={styles.container}>
 
             <View style={styles.cartHeader}>
                 <View style={styles.header}>
                     <TouchableOpacity
+                        activeOpacity={0.9}
                         style={styles.back}
                         onPress={() => {
                             if (previousScreen) {
@@ -286,6 +302,7 @@ const CartScreen = () => {
                         </Text>
 
                         <TouchableOpacity
+                            activeOpacity={0.9}
                             onPress={() => {
                                 if (isEditingAddress) {
                                     saveAddress();
@@ -328,7 +345,7 @@ const CartScreen = () => {
                             </Text>
                         </View>
 
-                        <TouchableOpacity style={styles.breakdownContainer} onPress={() =>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.breakdownContainer} onPress={() =>
                             setShowBreakdownModal(true)
                         }>
                             <Text style={styles.breakdownText}>
@@ -341,7 +358,7 @@ const CartScreen = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity style={styles.orderButton} onPress={() => navigation.navigate('payment', { totalPrice })}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.orderButton} onPress={() => navigation.navigate('payment', { totalPrice })}>
                         <Text style={styles.orderButtonText}>
                             PLACE ORDER
                         </Text>
@@ -358,11 +375,11 @@ const CartScreen = () => {
             >
                 <TouchableOpacity
                     style={styles.modalOverlay}
-                    activeOpacity={1}
+                    activeOpacity={0.9}
                     onPress={() => setShowBreakdownModal(false)}
                 >
                     <TouchableOpacity
-                        activeOpacity={1}
+                        activeOpacity={0.9}
                         style={styles.breakdownModal}
                     >
                         <Text style={styles.breakdownTitle}>
@@ -422,6 +439,7 @@ const CartScreen = () => {
                         </View>
 
                         <TouchableOpacity
+                            activeOpacity={0.9}
                             style={styles.closeModalButton}
                             onPress={() => setShowBreakdownModal(false)}
                         >

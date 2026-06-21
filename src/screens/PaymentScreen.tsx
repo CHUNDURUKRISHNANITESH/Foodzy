@@ -21,30 +21,30 @@ const paymentMethods = [
     {
         id: '1',
         name: 'Cash',
-        image: require('../assets/Cash.png'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847264/Cash_lnnbue.png',
     },
     {
         id: '2',
         name: 'Visa',
-        image: require('../assets/Group.png'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/Group_zbpjcq.png',
     },
     {
         id: '3',
         name: 'Mastercard',
-        image: require('../assets/masterCard.png'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847268/masterCard_lxdrba.png',
     },
     {
         id: '4',
         name: 'Paypal',
-        image: require('../assets/paypal.png'),
+        image: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847269/paypal_ftc7kq.png',
     },
 ];
 
 const cardImages: any = {
-    Visa: require('../assets/Group.png'),
-    Mastercard: require('../assets/masterCard.png'),
-    Paypal: require('../assets/paypal.png'),
-    Cash: require('../assets/Cash.png'),
+    Visa: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/Group_zbpjcq.png',
+    Mastercard: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847268/masterCard_lxdrba.png',
+    Paypal: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847269/paypal_ftc7kq.png',
+    Cash: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847264/Cash_lnnbue.png',
 };
 
 const PaymentScreen = () => {
@@ -137,6 +137,7 @@ const PaymentScreen = () => {
             }}>
                 <View style={styles.header}>
                     <TouchableOpacity
+                        activeOpacity={0.9}
                         style={styles.backButton}
                         onPress={() => navigation.replace('cart')}
                     >
@@ -151,7 +152,7 @@ const PaymentScreen = () => {
                         return (
                             <View style={styles.pay} key={item.id}>
                                 <TouchableOpacity
-                                    activeOpacity={0.8}
+                                    activeOpacity={0.9}
                                     onPress={() => setSelectedMethod(item.name)}
                                     style={[styles.paymentMethodCard, isSelected && styles.activePaymentMethod]}
                                 >
@@ -160,7 +161,7 @@ const PaymentScreen = () => {
                                             <Feather name="check" size={14} color="#FFF" />
                                         </View>
                                     )}
-                                    <Image source={item.image} style={styles.paymentIcon} resizeMode="contain" />
+                                    <Image source={{ uri: item.image }} style={styles.paymentIcon} resizeMode="contain" />
                                 </TouchableOpacity>
                                 <Text style={styles.paymentText}>{item.name}</Text>
                             </View>
@@ -178,7 +179,7 @@ const PaymentScreen = () => {
                             <View style={styles.box}>
                                 <View style={styles.mastercardBox}>
                                     <Image
-                                        source={cardImages[card.cardType]}
+                                        source={{ uri: cardImages[card.cardType] }}
                                         style={{
                                             width: 40,
                                             height: 30,
@@ -192,10 +193,11 @@ const PaymentScreen = () => {
                                 </View>
 
                                 <TouchableOpacity
+                                    activeOpacity={0.9}
                                     onPress={() => deleteCard(index)}
                                 >
                                     <Image
-                                        source={require('../assets/downArrow.png')}
+                                        source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847266/downArrow_agtkpm.png' }}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -204,7 +206,7 @@ const PaymentScreen = () => {
                 ) : (
                     <View style={styles.cardContainer}>
                         <Image
-                            source={require('../assets/banner.png')}
+                            source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847263/banner_yydvkf.png' }}
                             style={styles.masterCardImage}
                             resizeMode="contain"
                         />
@@ -216,6 +218,7 @@ const PaymentScreen = () => {
                 )}
 
                 <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.addButton}
                     onPress={() => navigation.navigate('addCard', { totalPrice: route.params.totalPrice, existingCards: savedCards, selectedMethod, })}
                 >
@@ -230,6 +233,7 @@ const PaymentScreen = () => {
             </View>
 
             <TouchableOpacity
+                activeOpacity={0.9}
                 style={styles.payButton}
                 onPress={() => {
                     if (selectedMethod !== 'Cash' &&

@@ -31,6 +31,7 @@ interface CartContextType {
     decreaseQuantity: (id: string) => void;
 
     removeItem: (id: string) => void;
+    clearCart: () => void;
 }
 
 const Cart =
@@ -62,22 +63,6 @@ export const CartProvider = ({
 
         loadCart();
     }, []);
-
-
-    // useEffect(() => {
-    //     const saveCart = async () => {
-    //         try {
-    //             await AsyncStorage.setItem(
-    //                 'cartItems',
-    //                 JSON.stringify(cartItems)
-    //             );
-    //         } catch (error) {
-    //             console.log('Error saving cart:', error);
-    //         }
-    //     };
-
-    //     saveCart();
-    // }, [cartItems]);
 
     useEffect(() => {
         if (saveTimeout.current) {
@@ -163,6 +148,10 @@ export const CartProvider = ({
         );
     }, []);
 
+    const clearCart = useCallback(() => {
+    setCartItems([]);
+}, []);
+
     const totalItems =
         cartItems.reduce(
             (sum, item) =>
@@ -179,6 +168,7 @@ export const CartProvider = ({
                 increaseQuantity,
                 decreaseQuantity,
                 removeItem,
+                clearCart,
             }}
         >
             {children}

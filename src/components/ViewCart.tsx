@@ -25,7 +25,7 @@ const ViewCart = ({ previousScreen }: ViewCartProps) => {
         <View>
             {totalItems > 0 && (
                 <TouchableOpacity
-                    activeOpacity={1}
+                    activeOpacity={0.9}
                     style={styles.fixedViewCart}
                     onPress={() =>
                         navigation.navigate('cart', {

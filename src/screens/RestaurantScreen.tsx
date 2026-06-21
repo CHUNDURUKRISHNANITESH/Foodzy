@@ -62,7 +62,7 @@ const FoodCard = ({ item }: FoodCardProps) => {
                     ${item.price}
                 </Text>
 
-                <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('foodDetails', { burgerData: item })}>
+                <TouchableOpacity activeOpacity={0.9} style={styles.addBtn} onPress={() => navigation.navigate('foodDetails', { burgerData: item })}>
                     <Text style={styles.plus}>+</Text>
                 </TouchableOpacity>
             </View>
@@ -151,7 +151,7 @@ const RestaurantScreen = () => {
                         }}
                         renderItem={({ item }) => (
                             <ImageBackground
-                                source={item}
+                                source={{uri:item}}
                                 style={styles.banner}
                                 imageStyle={styles.image}
                             />
@@ -192,7 +192,7 @@ const RestaurantScreen = () => {
                     <View style={styles.stats}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                             <Image source={require('../assets/Star.png')}></Image>
-                            <Text style={{ fontFamily: 'Sen-Bold' }}>{selectedRestaurant.rating}</Text>
+                            {/* <Text style={{ fontFamily: 'Sen-Bold' }}>{selectedRestaurant.rating}</Text> */}
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
@@ -202,7 +202,7 @@ const RestaurantScreen = () => {
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                             <Image source={require('../assets/Clock.png')}></Image>
-                            <Text style={{ fontFamily: 'Sen-Bold' }}>{selectedRestaurant.time}</Text>
+                            {/* <Text style={{ fontFamily: 'Sen-Bold' }}>{selectedRestaurant.time}</Text> */}
                         </View>
 
                     </View>

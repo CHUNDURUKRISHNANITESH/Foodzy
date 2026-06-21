@@ -12,7 +12,6 @@ import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Restaurants from '../components/Restaurants';
-import { ImageSourcePropType } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../navigation/types';
 import { FoodItem, pizzaData, sandwichData, burgerData } from '../items/foodItem';
@@ -20,6 +19,8 @@ import { useCart } from '../context/Cart';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ViewCart from '../components/ViewCart';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width, height } = Dimensions.get('window');
 //adb shell input keyevent 82
@@ -69,7 +70,7 @@ const PopularBurgers = () => {
     item: FoodItem;
   }) => {
     return (
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.card}>
         <Image
           source={item.image}
           style={styles.burgerImage}
@@ -85,7 +86,7 @@ const PopularBurgers = () => {
         <View style={styles.priceRow}>
           <Text style={styles.price}>${item.price}</Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate('foodDetails', { burgerData: item })}>
+          <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('foodDetails', { burgerData: item })}>
             <AntDesign name="pluscircle" color="#FF7A00" size={38} />
           </TouchableOpacity>
         </View>
@@ -100,8 +101,8 @@ const PopularBurgers = () => {
 
         <View style={styles.headerContainer}>
 
-          <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Search')}>
-            <Image source={require('../assets/backArrow.png')}></Image>
+          <TouchableOpacity activeOpacity={0.9} style={styles.iconButton} onPress={() => navigation.navigate('Search')}>
+             <Icon name="chevron-back" size={24} color="#181C2E" />
           </TouchableOpacity>
 
           <View>
@@ -109,7 +110,7 @@ const PopularBurgers = () => {
             <TouchableOpacity
               style={styles.categoryButton}
 
-              activeOpacity={0.8}
+              activeOpacity={0.9}
 
               onPress={() =>
                 setShowDropdown(!showDropdown)
@@ -119,9 +120,7 @@ const PopularBurgers = () => {
                 {selectedCategory}
               </Text>
 
-              <Image
-                source={require('../assets/PolygonTriangle.png')}
-              />
+               <FontAwesome name="caret-down" color="#FF8C00" size={24} />
 
             </TouchableOpacity>
 
@@ -131,6 +130,7 @@ const PopularBurgers = () => {
                 <View style={styles.dropdownMenu}>
 
                   <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.dropdownItem}
 
                     onPress={() =>
@@ -144,6 +144,7 @@ const PopularBurgers = () => {
                   </TouchableOpacity>
 
                   <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.dropdownItem}
 
                     onPress={() =>
@@ -157,6 +158,7 @@ const PopularBurgers = () => {
                   </TouchableOpacity>
 
                   <TouchableOpacity
+                    activeOpacity={0.9}
                     style={styles.dropdownItem}
 
                     onPress={() =>
@@ -177,15 +179,16 @@ const PopularBurgers = () => {
 
           <View style={styles.rightIcons}>
 
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9}>
               <Ionicons name="search-circle" color="#000" size={65} />
             </TouchableOpacity>
 
             <TouchableOpacity
+              activeOpacity={0.9}
               style={styles.filterButton}
               onPress={() => setFilterVisible(true)}
             >
-              <Image source={require('../assets/filter.png')} />
+              <Image source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847267/filter_lczy6w.png' }} style={styles.filter} />
             </TouchableOpacity>
 
           </View>
@@ -226,6 +229,7 @@ const PopularBurgers = () => {
               </Text>
 
               <TouchableOpacity
+                activeOpacity={0.9}
                 style={styles.closeButton}
                 onPress={() => setFilterVisible(false)}
               >
@@ -240,39 +244,39 @@ const PopularBurgers = () => {
             <Text style={styles.sectionTitleName}>OFFERS</Text>
 
             <View style={styles.chipRow}>
-              <TouchableOpacity style={styles.chip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.chip}>
                 <Text>Delivery</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.chip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.chip}>
                 <Text>Pick Up</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.chip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.chip}>
                 <Text>Offer</Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.largeChip}>
+            <TouchableOpacity activeOpacity={0.9} style={styles.largeChip}>
               <Text>Online payment available</Text>
-            </TouchableOpacity>
+            </TouchableOpacity >
 
             <Text style={styles.sectionTitleName}>
               DELIVER TIME
             </Text>
 
             <View style={styles.chipRow}>
-              <TouchableOpacity style={styles.activeChip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.activeChip}>
                 <Text style={styles.activeText}>
                   10-15 min
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.chip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.chip}>
                 <Text>20 min</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.chip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.chip}>
                 <Text>30 min</Text>
               </TouchableOpacity>
             </View>
@@ -282,15 +286,15 @@ const PopularBurgers = () => {
             </Text>
 
             <View style={styles.chipRow}>
-              <TouchableOpacity style={styles.circleChip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.circleChip}>
                 <Text>$</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.activeCircleChip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.activeCircleChip}>
                 <Text style={styles.activeText}>$$</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.circleChip}>
+              <TouchableOpacity activeOpacity={0.9} style={styles.circleChip}>
                 <Text>$$$</Text>
               </TouchableOpacity>
             </View>
@@ -302,6 +306,7 @@ const PopularBurgers = () => {
             <View style={styles.chipRow}>
               {[1, 2, 3, 4, 5].map(item => (
                 <TouchableOpacity
+                  activeOpacity={0.9}
                   key={item}
                   style={styles.circleChip}
                 >
@@ -317,6 +322,7 @@ const PopularBurgers = () => {
             </View>
 
             <TouchableOpacity
+              activeOpacity={0.9}
               style={styles.filterModalButton}
             >
               <Text style={styles.filterButtonText}>
@@ -327,7 +333,6 @@ const PopularBurgers = () => {
           </View>
         </View>
       </Modal>
-
     </SafeAreaView>
   );
 };
@@ -335,6 +340,14 @@ const PopularBurgers = () => {
 export default PopularBurgers;
 
 const styles = StyleSheet.create({
+  chevron: {
+    width: width * 0.017,
+    height: height * 0.017
+  },
+  filter: {
+    width: width * 0.07,
+    height: height * 0.03
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.35)',

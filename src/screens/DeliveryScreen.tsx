@@ -7,7 +7,7 @@ import { Image } from 'react-native';
 export default function DeliveryScreen({ navigation }: ScreenProps<'Delivery'>) {
   return (
     <View style={styles.center}>
-      <Image source={require('../assets/delivery.png')} style={styles.favorite}/>
+      <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847265/delivery_kydlju.webp'}} style={styles.favorite}/>
       <Text style={styles.title}>Free delivery offers</Text>
       <Text style={styles.subtitle}>
         Get all your loved foods in one place, you just place the order we do the rest
@@ -16,7 +16,7 @@ export default function DeliveryScreen({ navigation }: ScreenProps<'Delivery'>) 
       <Pagination total={3} currentIndex={2} />
 
       <View>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.next}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Login')} style={styles.next}>
           <Text style={styles.textNext}>GET STARTED</Text>
         </TouchableOpacity>
       </View>

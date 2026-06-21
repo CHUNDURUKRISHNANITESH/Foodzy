@@ -7,9 +7,11 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-//import RNLocation from 'react-native-location';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useOrder } from '../context/OrderContext';
+import { useCart } from '../context/Cart';
+
 //adb shell input keyevent 82
 //adb uninstall com.foodzy
 
@@ -18,12 +20,14 @@ type LocationType = {
   longitude: number;
 } | null;
 
-// RNLocation.configure({
-//   distanceFilter: 0,
-// });
-
 export default function PaymentSuccessScreen() {
   const navigation = useNavigation<any>();
+  const { setOrderPlaced } = useOrder();
+  const { clearCart } = useCart();
+
+  useEffect(() => {
+    setOrderPlaced(true);
+  }, []);
 
   const [currentLocation, setCurrentLocation] =
     useState<LocationType>(null);
@@ -41,84 +45,14 @@ export default function PaymentSuccessScreen() {
   }, []);
 
   const handleTrackOrder = () => {
-    // if (!currentLocation) {
-    //   Alert.alert(
-    //     'Location unavailable',
-    //     'Please allow location access first.'
-    //   );
-    //   return;
-    // }
-
     navigation.navigate('trackOrder');
-
-    // navigation.navigate('trackOrder', {
-    //   userLocation: currentLocation,
-    // });
-
   };
-
-  //const subscriptionRef = useRef<null | (() => void)>(null);
-
-  // useEffect(() => {
-  //   const startTracking = async () => {
-  //     const granted = await RNLocation.requestPermission({
-  //       ios: 'whenInUse',
-  //       android: { detail: 'fine' },
-  //     });
-
-  //     // if (!permission) {
-  //     //   Alert.alert('Permission denied');
-  //     //   return;
-  //     // }
-
-  //     if (granted) {
-  //       RNLocation.subscribeToLocationUpdates((locations) => {
-  //         const { latitude, longitude } = locations[0];
-  //         console.log(granted)
-  //         console.log(latitude, longitude);
-  //         setCurrentLocation({ latitude, longitude });
-  //       });
-  //     }
-
-  //     // subscriptionRef.current = RNLocation.subscribeToLocationUpdates(
-  //     //   (locations) => {
-  //     //     if (!locations?.length) return;
-
-  //     //     const { latitude, longitude } = locations[0];
-  //     //     console.log("here I am")
-  //     //     console.log(latitude, longitude)
-
-  //     //     setCurrentLocation({ latitude, longitude });
-  //     //   }
-  //     // );
-  //   };
-
-  //   startTracking();
-
-  //   // return () => {
-  //   //   if (subscriptionRef.current) {
-  //   //     subscriptionRef.current();
-  //   //     console.log(subscriptionRef.current())
-  //   //   }
-  //   // };
-  // }, []);
-
-  // const handleTrackOrder = () => {
-  //   if (!currentLocation) {
-  //     Alert.alert('Location not ready yet');
-  //     return;
-  //   }
-
-  //   navigation.navigate('trackOrder', {
-  //     userLocation: currentLocation,
-  //   });
-  // };
 
   return (
     <View style={styles.container}>
       <Image
         style={styles.walletImage}
-        source={require('../assets/walletCongratulate.png')}
+        source={{ uri: 'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847378/walletCongratulate_xtljkm.png' }}
       />
 
       <View style={styles.box}>
@@ -128,7 +62,7 @@ export default function PaymentSuccessScreen() {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.track} onPress={handleTrackOrder}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.track} onPress={handleTrackOrder}>
         <Text style={styles.trackOrder}>TRACK ORDER</Text>
       </TouchableOpacity>
     </View>

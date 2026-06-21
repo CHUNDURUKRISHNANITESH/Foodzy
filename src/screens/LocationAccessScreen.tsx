@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import {
   PERMISSIONS,
   RESULTS,
 } from 'react-native-permissions';
+const { width, height } = Dimensions.get('window');
 
 type LocationAccessNavProp = StackNavigationProp<RootStackParamList, 'LocationAccess'>;
 //adb shell input keyevent 82
@@ -131,10 +132,10 @@ const LocationAccessScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/Maps.png')} style={styles.map}></Image>
-      <TouchableOpacity style={styles.button} onPress={handleAccessLocationButton}>
+      <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847269/Maps_o8ydbw.png'}} style={styles.map}></Image>
+      <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handleAccessLocationButton}>
         <Text style={styles.buttonText}>ACCESS LOCATION</Text>
-        <Image source={require('../assets/Map_Pin.png')}></Image>
+        <Image source={{uri:'https://res.cloudinary.com/diazmm0lw/image/upload/v1781847269/Map_Pin_mtkawx.png'}} style={styles.mapPin}></Image>
       </TouchableOpacity>
       <Text style={styles.infoText}>
         DFOOD WILL ACCESS YOUR LOCATION ONLY WHILE USING THE APP.
@@ -146,7 +147,10 @@ const LocationAccessScreen = () => {
 export default LocationAccessScreen;
 
 const styles = StyleSheet.create({
-
+  mapPin:{
+    width:width*0.0825,
+    height:height*0.0375
+  },
   map: {
     width: '90%',
     height: '39%',
